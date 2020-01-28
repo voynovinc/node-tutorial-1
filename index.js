@@ -14,15 +14,21 @@ const server = http.createServer((req, res) => {
     // Save the current route
     const pathName = req.url;
 
-    // Decide what to do based on the route provided
+    // Overview page
     if (pathName === "/" || pathName === "/overview") {
         res.end("This is the overview");
+
+        // Product page
     } else if (pathName === "/product") {
         res.end("This is the product");
+
+        // API
     } else if (pathName === "/api") {
         // Send our json back
         res.writeHead(200, { "Content-type": "application/json" });
         res.end(data);
+
+        // Not found
     } else {
         // First set headers
         res.writeHead(404, {
@@ -37,7 +43,7 @@ const server = http.createServer((req, res) => {
     }
 });
 
-// localhost
+// Creates a server and listens on localhost
 server.listen(8000, "127.0.0.1", () => {
     console.log("Listening to requests on board 8000");
 });
