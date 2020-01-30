@@ -41,13 +41,10 @@ const dataObj = JSON.parse(data);
 // Called when our server hits a request call
 const server = http.createServer((req, res) => {
     // Log to see the current route
-    console.log(req.url);
-
-    // Save the current route
-    const pathName = req.url;
+    const { query, pathname } = url.parse(req.url, true);
 
     // Overview page
-    if (pathName === "/" || pathName === "/overview") {
+    if (pathname === "/" || pathname === "/overview") {
         res.writeHead(200, {
             "Content-type": "text/html"
         });
@@ -63,11 +60,15 @@ const server = http.createServer((req, res) => {
         res.end(output);
 
         // Product page
-    } else if (pathName === "/product") {
-        res.end("This is the product");
+    } else if (pathname === "/product") {
+        res.writeHead(200, { "Content-type": "text/html" });
+        const product = dataObj[query.id];
+        const output = replaceTemplate(tempProduct, product);
+
+        res.end(output);
 
         // API
-    } else if (pathName === "/api") {
+    } else if (pathname === "/api") {
         // Send our json back
         res.writeHead(200, { "Content-type": "application/json" });
         res.end(data);
